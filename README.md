@@ -15,11 +15,5 @@ PowerShell Security Analyzer is a production-grade, browser-based static analysi
 - **Obfuscation Analysis:** Entropy calculation and pattern detection for encoded/obfuscated payloads.
 - **Zero Dependencies:** Pure HTML5, CSS3, and ES6+ JavaScript. No backend, no API keys, no AI APIs.
 
-## Deployment
-1. Fork this repository.
-2. Go to **Settings > Pages**.
-3. Select `main` branch as the source.
-4. Your analyzer will be live at `https://<your-username>.github.io/powershell-security-analyzer/`.
-
 ## Security Disclaimer
 *Detection results are heuristic and may contain false positives or false negatives. Never execute suspicious PowerShell code solely because this tool reports it as safe. Perform additional analysis using appropriate security tooling and isolated environments.*
