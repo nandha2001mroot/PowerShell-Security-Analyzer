@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | PowerShell Security Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html"><i class="bi bi-shield-lock-fill text-primary"></i> PSA</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="analyzer.html">Analyzer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="history.html">History</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="settings.html">Settings</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="mb-4">About PowerShell Security Analyzer</h1>
+                
+                <div class="card bg-dark border-secondary mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Project Purpose</h5>
+                        <p class="card-text text-muted">A production-grade, browser-based static analysis tool designed to detect suspicious behavior, obfuscation, MITRE ATT&CK techniques, and Indicators of Compromise (IOCs) in PowerShell scripts <strong>without executing the code</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="card bg-dark border-secondary mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Security & Privacy Architecture</h5>
+                        <ul class="text-muted mb-0">
+                            <li><strong>100% Client-Side:</strong> All analysis happens in your browser's memory using JavaScript.</li>
+                            <li><strong>No Telemetry:</strong> Zero analytics, tracking, or external API calls.</li>
+                            <li><strong>No Execution:</strong> Uploaded code is treated strictly as plain text. No <code>eval()</code>, no <code>Function()</code> constructors.</li>
+                            <li><strong>Local Storage Only:</strong> Scan history is saved to your browser's localStorage and can be cleared at any time.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card bg-dark border-secondary mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Technology Stack</h5>
+                        <p class="card-text text-muted">HTML5, CSS3, Modern JavaScript (ES6+), Bootstrap 5, Bootstrap Icons, Chart.js. No backend, no Node.js, no Python, no AI APIs.</p>
+                    </div>
+                </div>
+
+                <div class="card bg-dark border-secondary mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Author & License</h5>
+                        <p class="card-text mb-1"><strong>Author:</strong> <a href="https://www.linkedin.com/in/nandha-kumar-m-952342159/" target="_blank" class="text-decoration-none text-primary">Nandha Kumar M</a></p>
+                        <p class="card-text mb-1"><strong>GitHub:</strong> <a href="https://github.com/nandha2001mroot/powershell-security-analyzer" target="_blank" class="text-decoration-none text-primary">nandha2001mroot/powershell-security-analyzer</a></p>
+                        <p class="card-text mb-0"><strong>License:</strong> <a href="https://opensource.org/licenses/MIT" target="_blank" class="text-decoration-none text-primary">MIT License</a></p>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning border-warning">
+                    <i class="bi bi-exclamation-triangle-fill"></i> <strong>Security Disclaimer:</strong> Detection results are heuristic and may contain false positives or false negatives. Never execute suspicious PowerShell code solely because this tool reports it as safe. Perform additional analysis using appropriate security tooling and isolated environments.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>

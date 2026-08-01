@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyze | PowerShell Security Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html"><i class="bi bi-shield-lock-fill text-primary"></i> PSA</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="analyzer.html">Analyzer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="history.html">History</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="settings.html">Settings</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-4">
+        <div class="row g-4">
+            <!-- Input Section -->
+            <div class="col-lg-5">
+                <div class="card bg-dark border-secondary mb-4">
+                    <div class="card-header bg-dark border-secondary d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-code-square"></i> Input Source</span>
+                        <span class="badge bg-success">100% Client-Side</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs mb-3" id="inputTab" role="tablist">
+                            <li class="nav-item"><button class="nav-link active" id="paste-tab" data-bs-toggle="tab" data-bs-target="#paste-pane" type="button">Paste Code</button></li>
+                            <li class="nav-item"><button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload-pane" type="button">Upload File</button></li>
+                        </ul>
+                        <div class="tab-content" id="inputTabContent">
+                            <div class="tab-pane fade show active" id="paste-pane">
+                                <textarea class="form-control bg-dark text-light border-secondary font-monospace" id="code-input" rows="12" placeholder="# Paste PowerShell code here..."></textarea>
+                            </div>
+                            <div class="tab-pane fade" id="upload-pane">
+                                <div class="border border-secondary border-dashed rounded p-4 text-center" id="drop-zone">
+                                    <i class="bi bi-cloud-arrow-up display-4 text-muted"></i>
+                                    <p class="mt-2 mb-1">Drag & drop .ps1, .psm1, .psd1, or .txt</p>
+                                    <p class="small text-muted">Max size: 10 MB</p>
+                                    <input type="file" id="file-input" class="d-none" accept=".ps1,.psm1,.psd1,.txt">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="document.getElementById('file-input').click()">Browse Files</button>
+                                    <p id="file-info" class="mt-2 text-info small d-none"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 mt-3">
+                            <button class="btn btn-primary flex-grow-1" id="analyze-btn"><i class="bi bi-play-fill"></i> Analyze</button>
+                            <button class="btn btn-outline-secondary" id="clear-btn"><i class="bi bi-x-lg"></i> Clear</button>
+                            <button class="btn btn-outline-info" id="sample-btn"><i class="bi bi-file-earmark-code"></i> Load Sample</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Obfuscation & Risk Preview -->
+                <div class="card bg-dark border-secondary">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">Analysis Preview</h6>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Obfuscation Score:</span>
+                            <span id="preview-obfuscation" class="fw-bold text-muted">0/100</span>
+                        </div>
+                        <div class="progress mb-3" style="height: 6px;">
+                            <div id="preview-obfuscation-bar" class="progress-bar bg-info" role="progressbar" style="width: 0%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Estimated Risk:</span>
+                            <span id="preview-risk" class="fw-bold text-muted">Pending</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="col-lg-7">
+                <div id="results-container" class="d-none">
+                    <!-- Executive Summary -->
+                    <div class="card bg-dark border-secondary mb-4">
+                        <div class="card-header bg-dark border-secondary d-flex justify-content-between">
+                            <span><i class="bi bi-clipboard-data"></i> Executive Summary</span>
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-secondary" id="export-html"><i class="bi bi-filetype-html"></i> HTML</button>
+                                <button class="btn btn-outline-secondary" id="export-json"><i class="bi bi-filetype-json"></i> JSON</button>
+                                <button class="btn btn-outline-secondary" id="export-csv"><i class="bi bi-filetype-csv"></i> CSV</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center mb-3">
+                                <div class="col-4">
+                                    <h2 id="res-risk-score" class="display-6 fw-bold text-danger">0</h2>
+                                    <small class="text-muted">Risk Score</small>
+                                </div>
+                                <div class="col-4">
+                                    <h2 id="res-mal-score" class="display-6 fw-bold text-warning">0%</h2>
+                                    <small class="text-muted">Malicious Behavior</small>
+                                </div>
+                                <div class="col-4">
+                                    <h2 id="res-confidence" class="display-6 fw-bold text-info">Low</h2>
+                                    <small class="text-muted">Confidence</small>
+                                </div>
+                            </div>
+                            <div class="alert alert-dark border-secondary" id="analyst-summary">
+                                <i class="bi bi-robot"></i> <strong>Analyst Summary:</strong> <span id="summary-text">Awaiting analysis...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs for Findings -->
+                    <ul class="nav nav-pills mb-3" id="resultsTab" role="tablist">
+                        <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-findings">Findings</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-mitre">MITRE</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-ioc">IOCs</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-code">Source Code</button></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="tab-findings">
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover table-sm" id="findings-table">
+                                    <thead><tr><th>Severity</th><th>Category</th><th>Description</th><th>Line</th></tr></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-mitre">
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover table-sm" id="mitre-table">
+                                    <thead><tr><th>ID</th><th>Tactic</th><th>Technique</th></tr></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-ioc">
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover table-sm" id="ioc-table">
+                                    <thead><tr><th>Type</th><th>Value</th><th>Line</th><th>Action</th></tr></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-code">
+                            <div class="d-flex justify-content-end mb-2">
+                                <button class="btn btn-sm btn-outline-secondary" id="toggle-wrap"><i class="bi bi-text-wrap"></i> Toggle Wrap</button>
+                                <button class="btn btn-sm btn-outline-secondary ms-2" id="copy-code"><i class="bi bi-clipboard"></i> Copy</button>
+                            </div>
+                            <pre class="bg-dark border border-secondary p-3 rounded font-monospace small" id="source-code-viewer" style="max-height: 500px; overflow-y: auto; white-space: pre;"><code></code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="empty-state" class="text-center py-5 text-muted">
+                    <i class="bi bi-shield-check display-1"></i>
+                    <p class="mt-3">Upload or paste PowerShell code to begin static analysis.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/signatures.js"></script>
+    <script src="js/mitre-engine.js"></script>
+    <script src="js/ioc-engine.js"></script>
+    <script src="js/obfuscation-engine.js"></script>
+    <script src="js/detector-engine.js"></script>
+    <script src="js/risk-engine.js"></script>
+    <script src="js/report-engine.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/analyzer.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
